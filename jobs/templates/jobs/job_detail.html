@@ -1,0 +1,447 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ job.title }} | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<!-- Job Header -->
+
+<div class="card p-4 p-lg-5 mb-4">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <div class="d-flex align-items-center mb-3">
+
+                <div
+                    class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center me-3"
+                    style="width: 56px; height: 56px;"
+                >
+                    <i class="bi bi-briefcase-fill fs-4"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="fw-bold mb-1">
+                        {{ job.title }}
+                    </h1>
+
+                    <p class="text-muted mb-0">
+
+                        <i class="bi bi-building me-1"></i>
+
+                        {{ job.company.name }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Job Tags -->
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <span class="badge bg-light text-dark px-3 py-2">
+
+                    <i class="bi bi-geo-alt me-1"></i>
+
+                    {{ job.location }}
+
+                </span>
+
+
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+                    <i class="bi bi-briefcase me-1"></i>
+
+                    {{ job.get_employment_type_display }}
+
+                </span>
+
+
+                {% if job.status == "OPEN" %}
+
+                    <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Open
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-danger-subtle text-danger px-3 py-2">
+
+                        <i class="bi bi-x-circle me-1"></i>
+
+                        Closed
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Apply Section -->
+
+        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+            {% if request.user.role == "JOB_SEEKER" %}
+
+                {% if job.status == "OPEN" %}
+
+                    <a
+                        href="{% url 'applications:apply_for_job' job.id %}"
+                        class="btn btn-primary btn-lg px-4"
+                    >
+
+                        <i class="bi bi-send me-2"></i>
+
+                        Apply Now
+
+                    </a>
+
+                {% else %}
+
+                    <button
+                        class="btn btn-secondary btn-lg px-4"
+                        disabled
+                    >
+
+                        <i class="bi bi-lock me-2"></i>
+
+                        Applications Closed
+
+                    </button>
+
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row g-4">
+
+    <!-- Main Job Information -->
+
+    <div class="col-lg-8">
+
+        <!-- Job Description -->
+
+        <div class="card p-4 mb-4">
+
+            <h3 class="fw-bold mb-3">
+
+                <i class="bi bi-file-text text-primary me-2"></i>
+
+                Job Description
+
+            </h3>
+
+            <p class="text-muted mb-0">
+                {{ job.description }}
+            </p>
+
+        </div>
+
+
+        <!-- Required Skills -->
+
+        <div class="card p-4 mb-4">
+
+            <h3 class="fw-bold mb-3">
+
+                <i class="bi bi-tools text-primary me-2"></i>
+
+                Required Skills
+
+            </h3>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                {% for skill in job.required_skills.split %}
+
+                    <span class="badge bg-light text-dark px-3 py-2">
+                        {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Experience -->
+
+        <div class="card p-4 mb-4">
+
+            <h3 class="fw-bold mb-3">
+
+                <i class="bi bi-person-workspace text-primary me-2"></i>
+
+                Experience Required
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                {{ job.experience_required|default:"Not specified" }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Job Summary -->
+
+    <div class="col-lg-4">
+
+        <div class="card p-4 mb-4">
+
+            <h4 class="fw-bold mb-4">
+                Job Overview
+            </h4>
+
+
+            <!-- Salary -->
+
+            <div class="d-flex align-items-start mb-4">
+
+                <div class="text-primary fs-4 me-3">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted d-block">
+                        Salary
+                    </small>
+
+                    <strong>
+
+                        {% if job.salary_min and job.salary_max %}
+
+                            {{ job.salary_min }} - {{ job.salary_max }}
+
+                        {% elif job.salary_min %}
+
+                            From {{ job.salary_min }}
+
+                        {% elif job.salary_max %}
+
+                            Up to {{ job.salary_max }}
+
+                        {% else %}
+
+                            Not specified
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Location -->
+
+            <div class="d-flex align-items-start mb-4">
+
+                <div class="text-primary fs-4 me-3">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted d-block">
+                        Location
+                    </small>
+
+                    <strong>
+                        {{ job.location }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Employment Type -->
+
+            <div class="d-flex align-items-start mb-4">
+
+                <div class="text-primary fs-4 me-3">
+
+                    <i class="bi bi-briefcase"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted d-block">
+                        Employment Type
+                    </small>
+
+                    <strong>
+                        {{ job.get_employment_type_display }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Experience -->
+
+            <div class="d-flex align-items-start mb-4">
+
+                <div class="text-primary fs-4 me-3">
+
+                    <i class="bi bi-person-badge"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted d-block">
+                        Experience
+                    </small>
+
+                    <strong>
+                        {{ job.experience_required|default:"Not specified" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Deadline -->
+
+            <div class="d-flex align-items-start">
+
+                <div class="text-primary fs-4 me-3">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted d-block">
+                        Application Deadline
+                    </small>
+
+                    <strong>
+                        {{ job.deadline }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Application Status -->
+
+        {% if request.user.role == "JOB_SEEKER" %}
+
+            {% if job.status == "OPEN" %}
+
+                <div class="card p-4 bg-primary text-white">
+
+                    <h5 class="fw-bold">
+                        Interested in this opportunity?
+                    </h5>
+
+                    <p class="mb-3 opacity-75">
+                        Submit your application and take the next step in your career.
+                    </p>
+
+                    <a
+                        href="{% url 'applications:apply_for_job' job.id %}"
+                        class="btn btn-light text-primary fw-semibold"
+                    >
+                        <i class="bi bi-send me-1"></i>
+                        Apply Now
+                    </a>
+
+                </div>
+
+            {% else %}
+
+                <div class="card p-4">
+
+                    <h5 class="fw-bold">
+                        Applications Closed
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        This job is no longer accepting applications.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- Navigation -->
+
+<div class="mt-5">
+
+    <a
+        href="{% url 'jobs:job_list' %}"
+        class="text-decoration-none me-4"
+    >
+
+        <i class="bi bi-arrow-left me-1"></i>
+
+        Back to Jobs
+
+    </a>
+
+
+    <a
+        href="{% url 'accounts:job_seeker_dashboard' %}"
+        class="text-decoration-none"
+    >
+
+        <i class="bi bi-grid me-1"></i>
+
+        Dashboard
+
+    </a>
+
+</div>
+
+{% endblock %}
+

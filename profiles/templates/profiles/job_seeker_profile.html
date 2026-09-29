@@ -1,0 +1,1102 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .profile-page {
+        padding: 8px 0 20px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .profile-container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .profile-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 18px;
+        color: #6c757d;
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.18s ease;
+    }
+
+    .profile-back:hover {
+        color: #0d6efd;
+    }
+
+    .profile-card,
+    .profile-sidebar-card {
+        overflow: hidden;
+        border: 0;
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    /* Main Header */
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 30px 38px;
+        border-bottom: 1px solid #edf0f2;
+        background: linear-gradient(
+            180deg,
+            rgba(13, 110, 253, 0.055) 0%,
+            rgba(13, 110, 253, 0.015) 100%
+        );
+    }
+
+    .profile-header-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1.25rem;
+    }
+
+    .profile-title {
+        margin: 0 0 4px;
+        color: #1f2937;
+        font-size: 1.45rem;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.35px;
+    }
+
+    .profile-subtitle {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.86rem;
+        line-height: 1.5;
+    }
+
+    .profile-body {
+        padding: 30px 38px 36px;
+    }
+
+    /* Section */
+
+    .profile-section {
+        margin-bottom: 30px;
+    }
+
+    .profile-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .profile-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 19px;
+    }
+
+    .profile-section-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 8px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 0.75rem;
+    }
+
+    .profile-section-title {
+        margin: 0;
+        color: #212529;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .profile-divider {
+        margin: 30px 0;
+        border-color: #edf0f2;
+        opacity: 1;
+    }
+
+    /* Fields */
+
+    .profile-field {
+        margin-bottom: 2px;
+    }
+
+    .profile-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #374151;
+        font-size: 0.84rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .profile-form .form-control,
+    .profile-form .form-select,
+    .profile-form input,
+    .profile-form select,
+    .profile-form textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .profile-form .form-control,
+    .profile-form .form-select {
+        min-height: 45px;
+        padding: 0.62rem 0.82rem;
+        border: 1px solid #dfe3e7;
+        border-radius: 9px;
+        background-color: #ffffff;
+        color: #1f2937;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.86rem;
+        box-shadow: none;
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    .profile-form .form-control::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    .profile-form .form-control:hover,
+    .profile-form .form-select:hover {
+        border-color: #c7cdd3;
+    }
+
+    .profile-form .form-control:focus,
+    .profile-form .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        outline: none;
+    }
+
+    .profile-form textarea {
+        min-height: 100px;
+        resize: vertical;
+        line-height: 1.55;
+    }
+
+    .profile-form input[type="file"] {
+        min-height: 45px;
+        padding: 0.55rem 0.7rem;
+    }
+
+    .profile-help {
+        margin-top: 6px;
+        color: #6c757d;
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    .profile-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+
+    .profile-error i {
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .profile-form-error {
+        margin-bottom: 24px;
+        padding: 11px 13px;
+        border: 1px solid #f5c2c7;
+        border-radius: 10px;
+        background: #f8d7da;
+        color: #842029;
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    /* Resume */
+
+    .resume-box {
+        margin-top: 4px;
+        padding: 15px;
+        border: 1px solid #e3e7eb;
+        border-radius: 11px;
+        background: #fafbfc;
+    }
+
+    .resume-current {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 17px;
+        padding: 12px 13px;
+        border: 1px solid #d1e7dd;
+        border-radius: 9px;
+        background: #f0f9f4;
+    }
+
+    .resume-current-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        background: #d1e7dd;
+        color: #198754;
+    }
+
+    .resume-current-label {
+        margin-bottom: 2px;
+        color: #198754;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .resume-current a {
+        color: #198754;
+        font-size: 0.78rem;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .resume-current a:hover {
+        text-decoration: underline;
+    }
+
+    /* Actions */
+
+    .profile-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .profile-action-button {
+        min-height: 44px;
+        padding: 0 20px;
+        border-radius: 9px;
+        font-size: 0.86rem;
+        font-weight: 600;
+    }
+
+    /* Sidebar */
+
+    .profile-sidebar-card {
+        padding: 26px;
+    }
+
+    .profile-user {
+        text-align: center;
+        padding-bottom: 23px;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+    .profile-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 13px;
+        border-radius: 50%;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1.8rem;
+    }
+
+    .profile-username {
+        margin: 0 0 3px;
+        color: #212529;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .profile-role {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.78rem;
+    }
+
+    .sidebar-section {
+        padding-top: 22px;
+    }
+
+    .sidebar-section + .sidebar-section {
+        margin-top: 22px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .sidebar-heading {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 15px;
+        color: #212529;
+        font-size: 0.95rem;
+        font-weight: 700;
+    }
+
+    .sidebar-heading i {
+        color: #0d6efd;
+    }
+
+    .tip-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-bottom: 13px;
+    }
+
+    .tip-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .tip-icon {
+        color: #198754;
+        font-size: 0.85rem;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .tip-text {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .quick-link {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 42px;
+        padding: 0 12px;
+        margin-bottom: 8px;
+        border: 1px solid #e0e5ea;
+        border-radius: 9px;
+        color: #495057;
+        background: #ffffff;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+            border-color 0.18s ease,
+            color 0.18s ease,
+            background-color 0.18s ease;
+    }
+
+    .quick-link:last-child {
+        margin-bottom: 0;
+    }
+
+    .quick-link i {
+        color: #0d6efd;
+    }
+
+    .quick-link:hover {
+        border-color: #b8d1f7;
+        color: #0d6efd;
+        background: #f7faff;
+    }
+
+    @media (max-width: 991.98px) {
+        .profile-sidebar-card {
+            margin-top: 4px;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .profile-header {
+            padding: 25px 24px;
+        }
+
+        .profile-body {
+            padding: 25px 24px 30px;
+        }
+
+        .profile-title {
+            font-size: 1.3rem;
+        }
+
+        .profile-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .profile-action-button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .profile-page {
+            padding-top: 0;
+        }
+
+        .profile-card,
+        .profile-sidebar-card {
+            border-radius: 14px;
+        }
+
+        .profile-header {
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .profile-header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+
+        .profile-body {
+            padding: 23px 18px 27px;
+        }
+
+        .profile-sidebar-card {
+            padding: 22px 18px;
+        }
+    }
+</style>
+
+<div class="profile-page">
+
+
+<div class="container">
+
+    <div class="profile-container">
+
+        <a
+            href="{% url 'accounts:job_seeker_dashboard' %}"
+            class="profile-back"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Dashboard
+        </a>
+
+        <div class="row g-4">
+
+            <!-- Main Profile Form -->
+
+            <div class="col-lg-8">
+
+                <div class="profile-card card shadow-sm">
+
+                    <div class="profile-header">
+
+                        <div class="profile-header-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+
+                        <div>
+
+                            <h1 class="profile-title">
+                                My Profile
+                            </h1>
+
+                            <p class="profile-subtitle">
+                                Keep your profile updated to improve your job recommendations.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-body">
+
+                        <form
+                            method="post"
+                            enctype="multipart/form-data"
+                            class="profile-form"
+                        >
+
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+
+                                <div class="profile-form-error">
+
+                                    <div class="d-flex align-items-start">
+
+                                        <i class="bi bi-exclamation-circle-fill me-2 mt-1"></i>
+
+                                        <div>
+
+                                            {% for error in form.non_field_errors %}
+
+                                                <div>
+                                                    {{ error }}
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                            <!-- Basic Information -->
+
+                            <div class="profile-section">
+
+                                <div class="profile-section-heading">
+
+                                    <div class="profile-section-icon">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                    <h2 class="profile-section-title">
+                                        Basic Information
+                                    </h2>
+
+                                </div>
+
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.full_name.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.full_name.label }}
+                                            </label>
+
+                                            {{ form.full_name }}
+
+                                            {% for error in form.full_name.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.phone.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.phone.label }}
+                                            </label>
+
+                                            {{ form.phone }}
+
+                                            {% for error in form.phone.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.location.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.location.label }}
+                                            </label>
+
+                                            {{ form.location }}
+
+                                            {% for error in form.location.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <hr class="profile-divider">
+
+                            <!-- Professional Information -->
+
+                            <div class="profile-section">
+
+                                <div class="profile-section-heading">
+
+                                    <div class="profile-section-icon">
+                                        <i class="bi bi-briefcase"></i>
+                                    </div>
+
+                                    <h2 class="profile-section-title">
+                                        Professional Information
+                                    </h2>
+
+                                </div>
+
+                                <div class="row g-3">
+
+                                    <div class="col-12">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.skills.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.skills.label }}
+                                            </label>
+
+                                            {{ form.skills }}
+
+                                            <div class="profile-help">
+                                                {{ form.skills.help_text }}
+                                            </div>
+
+                                            {% for error in form.skills.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.experience.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.experience.label }}
+                                            </label>
+
+                                            {{ form.experience }}
+
+                                            {% for error in form.experience.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.education.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.education.label }}
+                                            </label>
+
+                                            {{ form.education }}
+
+                                            {% for error in form.education.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <hr class="profile-divider">
+
+                            <!-- Job Preferences -->
+
+                            <div class="profile-section">
+
+                                <div class="profile-section-heading">
+
+                                    <div class="profile-section-icon">
+                                        <i class="bi bi-sliders"></i>
+                                    </div>
+
+                                    <h2 class="profile-section-title">
+                                        Job Preferences
+                                    </h2>
+
+                                </div>
+
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.preferred_job_type.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.preferred_job_type.label }}
+                                            </label>
+
+                                            {{ form.preferred_job_type }}
+
+                                            {% for error in form.preferred_job_type.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="profile-field">
+
+                                            <label
+                                                for="{{ form.preferred_location.id_for_label }}"
+                                                class="profile-label"
+                                            >
+                                                {{ form.preferred_location.label }}
+                                            </label>
+
+                                            {{ form.preferred_location }}
+
+                                            {% for error in form.preferred_location.errors %}
+
+                                                <div class="profile-error">
+
+                                                    <i class="bi bi-exclamation-circle"></i>
+
+                                                    <span>{{ error }}</span>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <hr class="profile-divider">
+
+                            <!-- Resume -->
+
+                            <div class="profile-section">
+
+                                <div class="profile-section-heading">
+
+                                    <div class="profile-section-icon">
+                                        <i class="bi bi-file-earmark-person"></i>
+                                    </div>
+
+                                    <h2 class="profile-section-title">
+                                        CV / Resume
+                                    </h2>
+
+                                </div>
+
+                                <div class="resume-box">
+
+                                    {% if profile.resume %}
+
+                                        <div class="resume-current">
+
+                                            <div class="resume-current-icon">
+                                                <i class="bi bi-file-earmark-check"></i>
+                                            </div>
+
+                                            <div>
+
+                                                <div class="resume-current-label">
+                                                    CV already uploaded
+                                                </div>
+
+                                                <a
+                                                    href="{{ profile.resume.url }}"
+                                                    target="_blank"
+                                                >
+                                                    View current CV
+                                                    <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                                </a>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    <div class="profile-field">
+
+                                        <label
+                                            for="{{ form.resume.id_for_label }}"
+                                            class="profile-label"
+                                        >
+                                            Upload CV
+                                        </label>
+
+                                        {{ form.resume }}
+
+                                        <div class="profile-help">
+                                            Accepted formats: PDF, DOC, DOCX.
+                                        </div>
+
+                                        {% for error in form.resume.errors %}
+
+                                            <div class="profile-error">
+
+                                                <i class="bi bi-exclamation-circle"></i>
+
+                                                <span>{{ error }}</span>
+
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Save -->
+
+                            <div class="profile-actions">
+
+                                <a
+                                    href="{% url 'accounts:job_seeker_dashboard' %}"
+                                    class="btn btn-outline-secondary profile-action-button"
+                                >
+                                    Cancel
+                                </a>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary profile-action-button"
+                                >
+                                    <i class="bi bi-check-lg me-2"></i>
+                                    Save Profile
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Sidebar -->
+
+            <div class="col-lg-4">
+
+                <div class="profile-sidebar-card card shadow-sm">
+
+                    <!-- User -->
+
+                    <div class="profile-user">
+
+                        <div class="profile-avatar">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+
+                        <h3 class="profile-username">
+                            {{ request.user.username }}
+                        </h3>
+
+                        <p class="profile-role">
+                            Job Seeker
+                        </p>
+
+                    </div>
+
+
+                    <!-- Profile Tips -->
+
+                    <div class="sidebar-section">
+
+                        <h4 class="sidebar-heading">
+                            <i class="bi bi-lightbulb"></i>
+                            Profile Tips
+                        </h4>
+
+                        <div class="tip-item">
+
+                            <i class="bi bi-check-circle-fill tip-icon"></i>
+
+                            <p class="tip-text">
+                                Keep your skills up to date.
+                            </p>
+
+                        </div>
+
+                        <div class="tip-item">
+
+                            <i class="bi bi-check-circle-fill tip-icon"></i>
+
+                            <p class="tip-text">
+                                Add your relevant experience and education.
+                            </p>
+
+                        </div>
+
+                        <div class="tip-item">
+
+                            <i class="bi bi-check-circle-fill tip-icon"></i>
+
+                            <p class="tip-text">
+                                Upload a current CV to make your application stronger.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Quick Links -->
+
+                    <div class="sidebar-section">
+
+                        <h4 class="sidebar-heading">
+                            <i class="bi bi-lightning"></i>
+                            Quick Links
+                        </h4>
+
+                        <a
+                            href="{% url 'accounts:job_seeker_dashboard' %}"
+                            class="quick-link"
+                        >
+                            <i class="bi bi-grid"></i>
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="{% url 'jobs:job_list' %}"
+                            class="quick-link"
+                        >
+                            <i class="bi bi-search"></i>
+                            Browse Jobs
+                        </a>
+
+                        <a
+                            href="{% url 'applications:my_applications' %}"
+                            class="quick-link"
+                        >
+                            <i class="bi bi-file-earmark-text"></i>
+                            My Applications
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,954 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Job | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       EDIT JOB PAGE
+       ========================================================= */
+
+    .edit-job-page {
+        padding: 8px 0 20px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .edit-job-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* =========================================================
+       BACK LINK
+       ========================================================= */
+
+    .edit-job-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 18px;
+        color: #6c757d;
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.18s ease;
+    }
+
+    .edit-job-back:hover {
+        color: #0d6efd;
+    }
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .edit-job-card {
+        overflow: hidden;
+        border: 0;
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .edit-job-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 30px 38px;
+        border-bottom: 1px solid #edf0f2;
+        background: linear-gradient(
+            180deg,
+            rgba(13, 110, 253, 0.055) 0%,
+            rgba(13, 110, 253, 0.015) 100%
+        );
+    }
+
+    .edit-job-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1.25rem;
+    }
+
+    .edit-job-title {
+        margin: 0 0 4px;
+        color: #1f2937;
+        font-size: 1.45rem;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.35px;
+    }
+
+    .edit-job-subtitle {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.86rem;
+        line-height: 1.5;
+    }
+
+    /* =========================================================
+       BODY
+       ========================================================= */
+
+    .edit-job-body {
+        padding: 30px 38px 36px;
+    }
+
+    /* =========================================================
+       CURRENT JOB INFO
+       ========================================================= */
+
+    .current-job-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 30px;
+        padding: 13px 15px;
+        border: 1px solid #e5e9ed;
+        border-radius: 11px;
+        background: #fafbfc;
+    }
+
+    .current-job-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1rem;
+    }
+
+    .current-job-label {
+        margin-bottom: 2px;
+        color: #6c757d;
+        font-size: 0.74rem;
+        line-height: 1.3;
+    }
+
+    .current-job-name {
+        color: #212529;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+       FORM SECTIONS
+       ========================================================= */
+
+    .edit-job-section {
+        padding-top: 0;
+    }
+
+    .edit-job-section + .edit-job-section {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .edit-job-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 19px;
+    }
+
+    .edit-job-section-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 8px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 0.73rem;
+        font-weight: 700;
+    }
+
+    .edit-job-section-title {
+        margin: 0;
+        color: #212529;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    /* =========================================================
+       FORM FIELDS
+       ========================================================= */
+
+    .edit-job-field {
+        margin-bottom: 18px;
+    }
+
+    .edit-job-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .edit-job-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #374151;
+        font-size: 0.84rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .edit-job-form .form-control,
+    .edit-job-form .form-select,
+    .edit-job-form input,
+    .edit-job-form select,
+    .edit-job-form textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .edit-job-form .form-control,
+    .edit-job-form .form-select {
+        min-height: 45px;
+        padding: 0.62rem 0.82rem;
+        border: 1px solid #dfe3e7;
+        border-radius: 9px;
+        background-color: #ffffff;
+        color: #1f2937;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.86rem;
+        box-shadow: none;
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    .edit-job-form .form-control::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    .edit-job-form .form-control:hover,
+    .edit-job-form .form-select:hover {
+        border-color: #c7cdd3;
+    }
+
+    .edit-job-form .form-control:focus,
+    .edit-job-form .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        outline: none;
+    }
+
+    .edit-job-form textarea[name="description"] {
+        min-height: 125px;
+        resize: vertical;
+        line-height: 1.55;
+    }
+
+    .edit-job-form textarea[name="required_skills"] {
+        min-height: 82px;
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    .edit-job-help {
+        margin-top: 6px;
+        color: #6c757d;
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+       ERRORS
+       ========================================================= */
+
+    .edit-job-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+
+    .edit-job-error i {
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .edit-job-form-error {
+        margin-bottom: 24px;
+        padding: 11px 13px;
+        border: 1px solid #f5c2c7;
+        border-radius: 10px;
+        background: #f8d7da;
+        color: #842029;
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    .status-wrapper {
+        max-width: 420px;
+    }
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .edit-job-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .edit-job-action-button {
+        min-height: 44px;
+        padding: 0 20px;
+        border-radius: 9px;
+        font-size: 0.86rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .edit-job-header {
+            padding: 25px 24px;
+        }
+
+        .edit-job-body {
+            padding: 25px 24px 30px;
+        }
+
+        .edit-job-title {
+            font-size: 1.3rem;
+        }
+
+        .edit-job-section + .edit-job-section {
+            margin-top: 26px;
+            padding-top: 26px;
+        }
+
+        .edit-job-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .edit-job-action-button {
+            width: 100%;
+        }
+
+        .status-wrapper {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+
+        .edit-job-page {
+            padding-top: 0;
+        }
+
+        .edit-job-card {
+            border-radius: 14px;
+        }
+
+        .edit-job-header {
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .edit-job-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+
+        .current-job-info {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="edit-job-page">
+
+```
+<div class="container">
+
+    <div class="edit-job-container">
+
+        <!-- =================================================
+             BACK LINK
+             ================================================= -->
+
+        <a
+            href="{% url 'jobs:my_jobs' %}"
+            class="edit-job-back"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to My Jobs
+        </a>
+
+
+        <!-- =================================================
+             MAIN CARD
+             ================================================= -->
+
+        <div class="edit-job-card card shadow-sm">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="edit-job-header">
+
+                <div class="edit-job-icon">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="edit-job-title">
+                        Edit Job
+                    </h1>
+
+                    <p class="edit-job-subtitle">
+                        Update the details of your job posting.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BODY
+                 ================================================= -->
+
+            <div class="edit-job-body">
+
+
+                <!-- Current Job -->
+
+                <div class="current-job-info">
+
+                    <div class="current-job-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
+
+                    <div>
+
+                        <div class="current-job-label">
+                            Editing Job
+                        </div>
+
+                        <div class="current-job-name">
+                            {{ job.title }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM
+                     ================================================= -->
+
+                <form method="post" class="edit-job-form">
+
+                    {% csrf_token %}
+
+
+                    <!-- Form-level errors -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="edit-job-form-error">
+
+                            <div class="d-flex align-items-start">
+
+                                <i class="bi bi-exclamation-circle-fill me-2 mt-1"></i>
+
+                                <div>
+
+                                    {% for error in form.non_field_errors %}
+
+                                        <div>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         SECTION 1 — JOB INFORMATION
+                         ================================================= -->
+
+                    <div class="edit-job-section">
+
+                        <div class="edit-job-section-heading">
+
+                            <div class="edit-job-section-number">
+                                01
+                            </div>
+
+                            <h2 class="edit-job-section-title">
+                                Job Information
+                            </h2>
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+
+                            <!-- Job Title -->
+
+                            <div class="col-12">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.title.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Job Title
+                                    </label>
+
+                                    {{ form.title }}
+
+                                    {% for error in form.title.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Description -->
+
+                            <div class="col-12">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.description.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Job Description
+                                    </label>
+
+                                    {{ form.description }}
+
+                                    {% for error in form.description.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Required Skills -->
+
+                            <div class="col-12">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.required_skills.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Required Skills
+                                    </label>
+
+                                    {{ form.required_skills }}
+
+                                    <div class="edit-job-help">
+                                        Enter required skills separated by commas.
+                                    </div>
+
+                                    {% for error in form.required_skills.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Location -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.location.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Location
+                                    </label>
+
+                                    {{ form.location }}
+
+                                    {% for error in form.location.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Employment Type -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.employment_type.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Employment Type
+                                    </label>
+
+                                    {{ form.employment_type }}
+
+                                    {% for error in form.employment_type.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SECTION 2 — COMPENSATION & EXPERIENCE
+                         ================================================= -->
+
+                    <div class="edit-job-section">
+
+                        <div class="edit-job-section-heading">
+
+                            <div class="edit-job-section-number">
+                                02
+                            </div>
+
+                            <h2 class="edit-job-section-title">
+                                Compensation &amp; Experience
+                            </h2>
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+
+                            <!-- Minimum Salary -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.salary_min.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Minimum Salary
+                                    </label>
+
+                                    {{ form.salary_min }}
+
+                                    {% for error in form.salary_min.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Maximum Salary -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.salary_max.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Maximum Salary
+                                    </label>
+
+                                    {{ form.salary_max }}
+
+                                    {% for error in form.salary_max.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Experience -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.experience_required.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Experience Required
+                                    </label>
+
+                                    {{ form.experience_required }}
+
+                                    {% for error in form.experience_required.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Deadline -->
+
+                            <div class="col-md-6">
+
+                                <div class="edit-job-field">
+
+                                    <label
+                                        for="{{ form.deadline.id_for_label }}"
+                                        class="edit-job-label"
+                                    >
+                                        Application Deadline
+                                    </label>
+
+                                    {{ form.deadline }}
+
+                                    {% for error in form.deadline.errors %}
+
+                                        <div class="edit-job-error">
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                            <span>{{ error }}</span>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SECTION 3 — JOB STATUS
+                         ================================================= -->
+
+                    <div class="edit-job-section">
+
+                        <div class="edit-job-section-heading">
+
+                            <div class="edit-job-section-number">
+                                03
+                            </div>
+
+                            <h2 class="edit-job-section-title">
+                                Job Status
+                            </h2>
+
+                        </div>
+
+
+                        <div class="status-wrapper">
+
+                            <div class="edit-job-field">
+
+                                <label
+                                    for="{{ form.status.id_for_label }}"
+                                    class="edit-job-label"
+                                >
+                                    Status
+                                </label>
+
+                                {{ form.status }}
+
+                                {% for error in form.status.errors %}
+
+                                    <div class="edit-job-error">
+
+                                        <i class="bi bi-exclamation-circle"></i>
+
+                                        <span>{{ error }}</span>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                         ================================================= -->
+
+                    <div class="edit-job-actions">
+
+                        <a
+                            href="{% url 'jobs:my_jobs' %}"
+                            class="btn btn-outline-secondary edit-job-action-button"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary edit-job-action-button"
+                        >
+                            <i class="bi bi-check-lg me-2"></i>
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

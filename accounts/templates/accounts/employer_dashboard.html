@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Employer Dashboard | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<!-- Dashboard Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            Welcome back, {{ request.user.username }} 👋
+        </h1>
+
+        <p class="text-muted mb-0">
+            Manage your company, job postings, and applications.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'jobs:create_job' %}"
+        class="btn btn-primary px-4"
+    >
+        <i class="bi bi-plus-circle me-2"></i>
+        Post a Job
+    </a>
+
+</div>
+
+
+<!-- Job Statistics -->
+
+<div class="row g-4 mb-5">
+
+    <!-- Total Jobs -->
+
+    <div class="col-md-6 col-lg-3">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <p class="text-muted mb-1">
+                        Total Jobs
+                    </p>
+
+                    <h2 class="fw-bold mb-0">
+                        {{ total_jobs }}
+                    </h2>
+
+                </div>
+
+                <div class="fs-2 text-primary">
+
+                    <i class="bi bi-briefcase"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Open Jobs -->
+
+    <div class="col-md-6 col-lg-3">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <p class="text-muted mb-1">
+                        Open Jobs
+                    </p>
+
+                    <h2 class="fw-bold mb-0">
+                        {{ open_jobs }}
+                    </h2>
+
+                </div>
+
+                <div class="fs-2 text-success">
+
+                    <i class="bi bi-check-circle"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Closed Jobs -->
+
+    <div class="col-md-6 col-lg-3">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <p class="text-muted mb-1">
+                        Closed Jobs
+                    </p>
+
+                    <h2 class="fw-bold mb-0">
+                        {{ closed_jobs }}
+                    </h2>
+
+                </div>
+
+                <div class="fs-2 text-secondary">
+
+                    <i class="bi bi-x-circle"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Applications -->
+
+    <div class="col-md-6 col-lg-3">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <p class="text-muted mb-1">
+                        Applications
+                    </p>
+
+                    <h2 class="fw-bold mb-0">
+                        {{ total_applications }}
+                    </h2>
+
+                </div>
+
+                <div class="fs-2 text-warning">
+
+                    <i class="bi bi-file-earmark-text"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Management Section -->
+
+<div class="row g-4">
+
+    <!-- Company Management -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex align-items-center mb-3">
+
+                <div
+                    class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center me-3"
+                    style="width: 48px; height: 48px;"
+                >
+
+                    <i class="bi bi-building fs-5"></i>
+
+                </div>
+
+                <div>
+
+                    <h4 class="fw-bold mb-1">
+                        Company Management
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Manage your company information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p class="text-muted">
+                Keep your company profile up to date so job seekers
+                can learn more about your organization.
+            </p>
+
+
+            <a
+                href="{% url 'companies:company_profile' %}"
+                class="btn btn-outline-primary"
+            >
+
+                <i class="bi bi-building me-1"></i>
+
+                Manage Company Profile
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Job Management -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100 p-4">
+
+            <div class="d-flex align-items-center mb-3">
+
+                <div
+                    class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center me-3"
+                    style="width: 48px; height: 48px;"
+                >
+
+                    <i class="bi bi-briefcase fs-5"></i>
+
+                </div>
+
+                <div>
+
+                    <h4 class="fw-bold mb-1">
+                        Job Management
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Create and manage your job postings.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p class="text-muted">
+                Post new opportunities and manage the jobs
+                currently listed by your company.
+            </p>
+
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a
+                    href="{% url 'jobs:create_job' %}"
+                    class="btn btn-primary"
+                >
+
+                    <i class="bi bi-plus-circle me-1"></i>
+
+                    Post a Job
+
+                </a>
+
+
+                <a
+                    href="{% url 'jobs:my_jobs' %}"
+                    class="btn btn-outline-primary"
+                >
+
+                    <i class="bi bi-list-ul me-1"></i>
+
+                    My Jobs
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Applications -->
+
+<div class="card p-4 mt-4">
+
+    <div class="d-flex align-items-center">
+
+        <div
+            class="bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center me-3"
+            style="width: 48px; height: 48px;"
+        >
+
+            <i class="bi bi-people fs-5"></i>
+
+        </div>
+
+        <div>
+
+            <h4 class="fw-bold mb-1">
+                Candidate Applications
+            </h4>
+
+            <p class="text-muted mb-0">
+                Review applications from candidates through your posted jobs.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

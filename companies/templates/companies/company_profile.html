@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+
+{% block title %}
+Company Profile | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       COMPANY PROFILE PAGE
+       ========================================================= */
+
+    .company-profile-page {
+        padding: 8px 0 20px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .company-profile-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* =========================================================
+       BACK LINK
+       ========================================================= */
+
+    .company-profile-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 18px;
+        color: #6c757d;
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.18s ease;
+    }
+
+    .company-profile-back:hover {
+        color: #0d6efd;
+    }
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .company-profile-card {
+        overflow: hidden;
+        border: 0;
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .company-profile-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 30px 38px;
+        border-bottom: 1px solid #edf0f2;
+        background: linear-gradient(
+            180deg,
+            rgba(13, 110, 253, 0.055) 0%,
+            rgba(13, 110, 253, 0.015) 100%
+        );
+    }
+
+    .company-profile-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1.25rem;
+    }
+
+    .company-profile-title {
+        margin: 0 0 4px;
+        color: #1f2937;
+        font-size: 1.45rem;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.35px;
+    }
+
+    .company-profile-subtitle {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.86rem;
+        line-height: 1.5;
+    }
+
+    /* =========================================================
+       BODY
+       ========================================================= */
+
+    .company-profile-body {
+        padding: 30px 38px 36px;
+    }
+
+    /* =========================================================
+       ACCOUNT INFO
+       ========================================================= */
+
+    .account-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 30px;
+        padding: 13px 15px;
+        border: 1px solid #e5e9ed;
+        border-radius: 11px;
+        background: #fafbfc;
+    }
+
+    .account-info-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1rem;
+    }
+
+    .account-info-label {
+        margin-bottom: 2px;
+        color: #6c757d;
+        font-size: 0.74rem;
+        line-height: 1.3;
+    }
+
+    .account-info-name {
+        color: #212529;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+       FORM SECTION
+       ========================================================= */
+
+    .company-section {
+        padding-top: 0;
+    }
+
+    .company-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 19px;
+    }
+
+    .company-section-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 8px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 0.75rem;
+    }
+
+    .company-section-title {
+        margin: 0;
+        color: #212529;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    /* =========================================================
+       FORM FIELDS
+       ========================================================= */
+
+    .company-field {
+        margin-bottom: 18px;
+    }
+
+    .company-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .company-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #374151;
+        font-size: 0.84rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .company-form .form-control,
+    .company-form .form-select,
+    .company-form input,
+    .company-form select,
+    .company-form textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .company-form .form-control,
+    .company-form .form-select {
+        min-height: 45px;
+        padding: 0.62rem 0.82rem;
+        border: 1px solid #dfe3e7;
+        border-radius: 9px;
+        background-color: #ffffff;
+        color: #1f2937;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.86rem;
+        box-shadow: none;
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    .company-form .form-control::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    .company-form .form-control:hover,
+    .company-form .form-select:hover {
+        border-color: #c7cdd3;
+    }
+
+    .company-form .form-control:focus,
+    .company-form .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        outline: none;
+    }
+
+    .company-form textarea {
+        min-height: 115px;
+        resize: vertical;
+        line-height: 1.55;
+    }
+
+    .company-help {
+        margin-top: 6px;
+        color: #6c757d;
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+       ERRORS
+       ========================================================= */
+
+    .company-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+
+    .company-error i {
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .company-form-error {
+        margin-bottom: 24px;
+        padding: 11px 13px;
+        border: 1px solid #f5c2c7;
+        border-radius: 10px;
+        background: #f8d7da;
+        color: #842029;
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .company-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .company-action-button {
+        min-height: 44px;
+        padding: 0 20px;
+        border-radius: 9px;
+        font-size: 0.86rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .company-profile-header {
+            padding: 25px 24px;
+        }
+
+        .company-profile-body {
+            padding: 25px 24px 30px;
+        }
+
+        .company-profile-title {
+            font-size: 1.3rem;
+        }
+
+        .company-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .company-action-button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+
+        .company-profile-page {
+            padding-top: 0;
+        }
+
+        .company-profile-card {
+            border-radius: 14px;
+        }
+
+        .company-profile-header {
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .company-profile-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+
+        .account-info {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="company-profile-page">
+
+
+<div class="container">
+
+    <div class="company-profile-container">
+
+        <!-- =================================================
+             BACK LINK
+             ================================================= -->
+
+        <a
+            href="{% url 'accounts:employer_dashboard' %}"
+            class="company-profile-back"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Dashboard
+        </a>
+
+
+        <!-- =================================================
+             MAIN CARD
+             ================================================= -->
+
+        <div class="company-profile-card card shadow-sm">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="company-profile-header">
+
+                <div class="company-profile-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="company-profile-title">
+                        Company Profile
+                    </h1>
+
+                    <p class="company-profile-subtitle">
+                        Manage your company's information and details.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BODY
+                 ================================================= -->
+
+            <div class="company-profile-body">
+
+
+                <!-- Account Information -->
+
+                <div class="account-info">
+
+                    <div class="account-info-icon">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+
+                    <div>
+
+                        <div class="account-info-label">
+                            Logged in as
+                        </div>
+
+                        <div class="account-info-name">
+                            {{ request.user.username }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM
+                     ================================================= -->
+
+                <form
+                    method="post"
+                    class="company-form"
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- Form-level errors -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="company-form-error">
+
+                            <div class="d-flex align-items-start">
+
+                                <i class="bi bi-exclamation-circle-fill me-2 mt-1"></i>
+
+                                <div>
+
+                                    {% for error in form.non_field_errors %}
+
+                                        <div>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         COMPANY INFORMATION
+                         ================================================= -->
+
+                    <div class="company-section">
+
+                        <div class="company-section-heading">
+
+                            <div class="company-section-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+
+                            <h2 class="company-section-title">
+                                Company Information
+                            </h2>
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+                            {% for field in form %}
+
+                                <div class="col-12">
+
+                                    <div class="company-field">
+
+                                        <label
+                                            for="{{ field.id_for_label }}"
+                                            class="company-label"
+                                        >
+                                            {{ field.label }}
+                                        </label>
+
+
+                                        {{ field }}
+
+
+                                        {% if field.help_text %}
+
+                                            <div class="company-help">
+                                                {{ field.help_text }}
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% for error in field.errors %}
+
+                                            <div class="company-error">
+
+                                                <i class="bi bi-exclamation-circle"></i>
+
+                                                <span>
+                                                    {{ error }}
+                                                </span>
+
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                         ================================================= -->
+
+                    <div class="company-actions">
+
+                        <a
+                            href="{% url 'accounts:employer_dashboard' %}"
+                            class="btn btn-outline-secondary company-action-button"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary company-action-button"
+                        >
+                            <i class="bi bi-check-lg me-2"></i>
+                            Save Company Profile
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

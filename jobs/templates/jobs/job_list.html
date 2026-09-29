@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Find Jobs | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="mb-4">
+
+    <h1 class="fw-bold mb-1">
+        Find Your Next Opportunity
+    </h1>
+
+    <p class="text-muted mb-0">
+        Search through available jobs and find the right opportunity for you.
+    </p>
+
+</div>
+
+
+<!-- Search and Filter -->
+
+<div class="card p-4 mb-5">
+
+    <form method="get">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-lg-7">
+
+                <label class="form-label fw-semibold">
+                    Search Jobs
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text bg-white">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search by title, skills, location..."
+                        value="{{ search_query }}"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-3">
+
+                <label class="form-label fw-semibold">
+                    Employment Type
+                </label>
+
+                <select
+                    name="employment_type"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        All Employment Types
+                    </option>
+
+                    {% for value, label in employment_types %}
+
+                        <option
+                            value="{{ value }}"
+                            {% if employment_type == value %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="col-lg-2">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                >
+                    <i class="bi bi-search me-1"></i>
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- Active Search -->
+
+{% if search_query or employment_type %}
+
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+
+        <span class="text-muted">
+            Active filters:
+        </span>
+
+        {% if search_query %}
+
+            <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+                <i class="bi bi-search me-1"></i>
+
+                {{ search_query }}
+
+            </span>
+
+        {% endif %}
+
+
+        {% if employment_type %}
+
+            <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+                <i class="bi bi-briefcase me-1"></i>
+
+                {{ employment_type }}
+
+            </span>
+
+        {% endif %}
+
+        <a
+            href="{% url 'jobs:job_list' %}"
+            class="btn btn-sm btn-outline-secondary"
+        >
+            Clear Filters
+        </a>
+
+    </div>
+
+{% endif %}
+
+
+<!-- Job Results -->
+
+{% if jobs %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Available Jobs
+            </h2>
+
+            <p class="text-muted mb-0">
+                Explore opportunities that match your search.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        {% for job in jobs %}
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 p-4">
+
+                    <!-- Job Title -->
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+
+                        <div>
+
+                            <h3 class="fw-bold mb-1">
+
+                                <a
+                                    href="{% url 'jobs:job_detail' job.id %}"
+                                    class="text-decoration-none text-dark"
+                                >
+                                    {{ job.title }}
+                                </a>
+
+                            </h3>
+
+                            <p class="text-muted mb-0">
+
+                                <i class="bi bi-building me-1"></i>
+
+                                {{ job.company.name }}
+
+                            </p>
+
+                        </div>
+
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+                            {{ job.get_employment_type_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Job Information -->
+
+                    <div class="mb-3">
+
+                        <span class="badge bg-light text-dark me-2 mb-2">
+
+                            <i class="bi bi-geo-alt me-1"></i>
+
+                            {{ job.location }}
+
+                        </span>
+
+
+                        <span class="badge bg-light text-dark me-2 mb-2">
+
+                            <i class="bi bi-person-workspace me-1"></i>
+
+                            {{ job.experience_required|default:"Experience not specified" }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Salary -->
+
+                    <div class="mb-3">
+
+                        <p class="mb-1 fw-semibold">
+
+                            <i class="bi bi-cash-stack text-success me-1"></i>
+
+                            Salary
+
+                        </p>
+
+                        <p class="text-muted mb-0">
+
+                            {% if job.salary_min and job.salary_max %}
+
+                                {{ job.salary_min }} - {{ job.salary_max }}
+
+                            {% elif job.salary_min %}
+
+                                From {{ job.salary_min }}
+
+                            {% elif job.salary_max %}
+
+                                Up to {{ job.salary_max }}
+
+                            {% else %}
+
+                                Not specified
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <p class="text-muted mb-4">
+
+                        {{ job.description|truncatewords:25 }}
+
+                    </p>
+
+
+                    <!-- Deadline and Button -->
+
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+
+                        <small class="text-muted">
+
+                            <i class="bi bi-calendar-event me-1"></i>
+
+                            Deadline: {{ job.deadline }}
+
+                        </small>
+
+
+                        <a
+                            href="{% url 'jobs:job_detail' job.id %}"
+                            class="btn btn-primary"
+                        >
+                            View Job
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <!-- No Jobs -->
+
+    <div class="card p-5 text-center">
+
+        <i class="bi bi-search fs-1 text-muted mb-3"></i>
+
+        <h3 class="fw-bold">
+            No Jobs Found
+        </h3>
+
+        <p class="text-muted">
+            No jobs match your current search or filter.
+        </p>
+
+        <div>
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="btn btn-primary"
+            >
+                View All Jobs
+            </a>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+
+<!-- Back to Dashboard -->
+
+<div class="mt-5">
+
+    <a
+        href="{% url 'accounts:job_seeker_dashboard' %}"
+        class="text-decoration-none"
+    >
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to Dashboard
+    </a>
+
+</div>
+
+{% endblock %}

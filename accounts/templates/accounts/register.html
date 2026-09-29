@@ -1,0 +1,741 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       REGISTER PAGE
+       ========================================================= */
+
+    .register-page {
+        padding: 12px 0 8px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        border: 0;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .register-header {
+        padding: 34px 40px 30px;
+        text-align: center;
+        background: linear-gradient(
+            180deg,
+            rgba(13, 110, 253, 0.075) 0%,
+            rgba(13, 110, 253, 0.025) 100%
+        );
+        border-bottom: 1px solid #eef1f4;
+    }
+
+    .register-icon {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 16px;
+        border-radius: 16px;
+        font-size: 1.3rem;
+    }
+
+    .register-title {
+        margin: 0;
+        color: #1f2937;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.45px;
+    }
+
+    .register-subtitle {
+        max-width: 350px;
+        margin: 8px auto 0;
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 400;
+        line-height: 1.55;
+    }
+
+    /* =========================================================
+       FORM BODY
+       ========================================================= */
+
+    .register-body {
+        padding: 32px 40px 34px;
+    }
+
+    .register-form {
+        width: 100%;
+    }
+
+    /* =========================================================
+       FORM FIELDS
+       ========================================================= */
+
+    .register-field-group {
+        width: 100%;
+        margin-bottom: 18px;
+    }
+
+    .register-label {
+        display: block;
+        width: 100%;
+        margin-bottom: 7px;
+        color: #374151;
+        font-size: 0.86rem;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: 0.05px;
+    }
+
+    .register-form .form-control,
+    .register-form .form-select,
+    .register-form input,
+    .register-form select,
+    .register-form textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .register-form .form-control,
+    .register-form .form-select {
+        min-height: 46px;
+        padding: 0.65rem 0.85rem;
+        border: 1px solid #dfe3e7;
+        border-radius: 10px;
+        background-color: #ffffff;
+        color: #1f2937;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 400;
+        line-height: 1.4;
+        box-shadow: none;
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            background-color 0.18s ease;
+    }
+
+    .register-form .form-control::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    .register-form .form-control:hover,
+    .register-form .form-select:hover {
+        border-color: #c7cdd3;
+    }
+
+    .register-form .form-control:focus,
+    .register-form .form-select:focus {
+        border-color: #86b7fe;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        outline: none;
+    }
+
+    /* =========================================================
+       ROLE SELECTION
+       ========================================================= */
+
+    .register-role {
+        width: 100%;
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+    .register-role .register-label {
+        margin-bottom: 9px;
+    }
+
+    .role-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        width: 100%;
+    }
+
+    .role-option-wrapper {
+        position: relative;
+        min-width: 0;
+    }
+
+    .role-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .role-option {
+        display: block;
+        width: 100%;
+        min-height: 126px;
+        padding: 16px;
+        border: 1px solid #dfe3e7;
+        border-radius: 13px;
+        background: #ffffff;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition:
+            border-color 0.18s ease,
+            background-color 0.18s ease,
+            box-shadow 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .role-option:hover {
+        border-color: #a9c7f5;
+        background-color: #fbfdff;
+        transform: translateY(-1px);
+    }
+
+    .role-option-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
+    .role-option-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 1.05rem;
+        transition:
+            background-color 0.18s ease,
+            color 0.18s ease;
+    }
+
+    .role-check {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 21px;
+        height: 21px;
+        border: 1.5px solid #cfd5db;
+        border-radius: 50%;
+        color: transparent;
+        font-size: 0.7rem;
+        transition:
+            background-color 0.18s ease,
+            border-color 0.18s ease,
+            color 0.18s ease;
+    }
+
+    .role-option-title {
+        margin-bottom: 3px;
+        color: #212529;
+        font-size: 0.92rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .role-option-description {
+        color: #6c757d;
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+
+    /* Selected role */
+
+    .role-input:checked + .role-option {
+        border-color: #0d6efd;
+        background-color: #f5f9ff;
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.08);
+    }
+
+    .role-input:checked + .role-option .role-option-icon {
+        background-color: #0d6efd;
+        color: #ffffff;
+    }
+
+    .role-input:checked + .role-option .role-check {
+        border-color: #0d6efd;
+        background-color: #0d6efd;
+        color: #ffffff;
+    }
+
+    .role-input:focus-visible + .role-option {
+        outline: 3px solid rgba(13, 110, 253, 0.18);
+        outline-offset: 2px;
+    }
+
+    /* =========================================================
+       ERRORS
+       ========================================================= */
+
+    .register-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        width: 100%;
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 0.78rem;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    .register-error i {
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .register-form-error {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 22px;
+        padding: 11px 13px;
+        border: 1px solid #f5c2c7;
+        border-radius: 10px;
+        background-color: #f8d7da;
+        color: #842029;
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    /* =========================================================
+       SUBMIT
+       ========================================================= */
+
+    .register-action {
+        width: 100%;
+        margin-top: 26px;
+        padding-top: 24px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .register-button {
+        display: block;
+        width: 100%;
+        min-height: 48px;
+        border: 0;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.05px;
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    .register-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(13, 110, 253, 0.18);
+    }
+
+    .register-button:active {
+        transform: translateY(0);
+    }
+
+    /* =========================================================
+       LOGIN LINK
+       ========================================================= */
+
+    .register-login {
+        margin-top: 22px;
+        text-align: center;
+    }
+
+    .register-login p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.84rem;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .register-login a {
+        margin-left: 3px;
+        color: #0d6efd;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .register-login a:hover {
+        text-decoration: underline;
+    }
+
+    /* =========================================================
+       SECURITY NOTE
+       ========================================================= */
+
+    .register-security {
+        margin: 18px 0 0;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.76rem;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .register-security i {
+        margin-right: 4px;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 575.98px) {
+
+        .register-page {
+            padding-top: 0;
+        }
+
+        .register-card {
+            max-width: 100%;
+            border-radius: 14px;
+        }
+
+        .register-header {
+            padding: 28px 24px 25px;
+        }
+
+        .register-body {
+            padding: 27px 24px 29px;
+        }
+
+        .register-title {
+            font-size: 1.45rem;
+        }
+
+        .register-icon {
+            width: 54px;
+            height: 54px;
+            margin-bottom: 14px;
+        }
+
+        .role-options {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .role-option {
+            min-height: 108px;
+        }
+    }
+</style>
+
+<div class="register-page">
+
+```
+<div class="container">
+
+    <div class="register-card card shadow-sm">
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <div class="register-header">
+
+            <div
+                class="register-icon bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center"
+            >
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+
+            <h1 class="register-title">
+                Create Your Account
+            </h1>
+
+            <p class="register-subtitle">
+                Join JobPortal and find your next opportunity.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM BODY
+             ================================================= -->
+
+        <div class="register-body">
+
+            <form method="post" class="register-form">
+
+                {% csrf_token %}
+
+
+                <!-- Form-level errors -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="register-form-error">
+
+                        <div class="d-flex align-items-start">
+
+                            <i class="bi bi-exclamation-circle-fill me-2 mt-1"></i>
+
+                            <div>
+
+                                {% for error in form.non_field_errors %}
+
+                                    <div>
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     ROLE SELECTION
+                     ================================================= -->
+
+                {% for field in form %}
+
+                    {% if field.name == "role" %}
+
+                        <div class="register-role">
+
+                            <label class="register-label">
+                                I want to join as
+                            </label>
+
+                            <div class="role-options">
+
+                                <!-- Job Seeker -->
+
+                                <div class="role-option-wrapper">
+
+                                    <input
+                                        type="radio"
+                                        name="{{ field.name }}"
+                                        value="JOB_SEEKER"
+                                        id="role-job-seeker"
+                                        class="role-input"
+                                        {% if field.value == "JOB_SEEKER" or not field.value %}checked{% endif %}
+                                    >
+
+                                    <label
+                                        for="role-job-seeker"
+                                        class="role-option"
+                                    >
+
+                                        <div class="role-option-top">
+
+                                            <div class="role-option-icon">
+                                                <i class="bi bi-person-workspace"></i>
+                                            </div>
+
+                                            <div class="role-check">
+                                                <i class="bi bi-check"></i>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="role-option-title">
+                                            Job Seeker
+                                        </div>
+
+                                        <div class="role-option-description">
+                                            Find jobs and apply
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+
+                                <!-- Employer -->
+
+                                <div class="role-option-wrapper">
+
+                                    <input
+                                        type="radio"
+                                        name="{{ field.name }}"
+                                        value="EMPLOYER"
+                                        id="role-employer"
+                                        class="role-input"
+                                        {% if field.value == "EMPLOYER" %}checked{% endif %}
+                                    >
+
+                                    <label
+                                        for="role-employer"
+                                        class="role-option"
+                                    >
+
+                                        <div class="role-option-top">
+
+                                            <div class="role-option-icon">
+                                                <i class="bi bi-building"></i>
+                                            </div>
+
+                                            <div class="role-check">
+                                                <i class="bi bi-check"></i>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="role-option-title">
+                                            Employer
+                                        </div>
+
+                                        <div class="role-option-description">
+                                            Post jobs and hire talent
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Role validation errors -->
+
+                            {% for error in field.errors %}
+
+                                <div class="register-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    <span>
+                                        {{ error }}
+                                    </span>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <!-- =================================================
+                     OTHER FORM FIELDS
+                     ================================================= -->
+
+                {% for field in form %}
+
+                    {% if field.name != "role" %}
+
+                        <div class="register-field-group">
+
+                            <label
+                                for="{{ field.id_for_label }}"
+                                class="register-label"
+                            >
+                                {{ field.label }}
+                            </label>
+
+                            <div>
+                                {{ field }}
+                            </div>
+
+
+                            <!-- Field validation errors -->
+
+                            {% for error in field.errors %}
+
+                                <div class="register-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    <span>
+                                        {{ error }}
+                                    </span>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <!-- =================================================
+                     SUBMIT
+                     ================================================= -->
+
+                <div class="register-action">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary register-button"
+                    >
+                        <i class="bi bi-person-plus-fill me-2"></i>
+                        Create Account
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- =================================================
+                 LOGIN LINK
+                 ================================================= -->
+
+            <div class="register-login">
+
+                <p>
+
+                    Already have an account?
+
+                    <a href="{% url 'accounts:login' %}">
+                        Login
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Security note -->
+
+    <p class="register-security">
+
+        <i class="bi bi-shield-check"></i>
+
+        Your account is securely managed by JobPortal.
+
+    </p>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

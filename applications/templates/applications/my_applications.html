@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Applications | JobPortal
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h1 class="fw-bold mb-1">
+            My Applications
+        </h1>
+
+        <p class="text-muted mb-0">
+            Track the jobs you have applied for and monitor their progress.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'jobs:job_list' %}"
+        class="btn btn-primary px-4"
+    >
+
+        <i class="bi bi-search me-2"></i>
+
+        Find More Jobs
+
+    </a>
+
+</div>
+
+
+<!-- Applications -->
+
+{% if applications %}
+
+    <div class="row g-4">
+
+        {% for application in applications %}
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 p-4">
+
+                    <!-- Application Header -->
+
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+
+                        <div>
+
+                            <h3 class="fw-bold mb-1">
+
+                                <a
+                                    href="{% url 'jobs:job_detail' application.job.id %}"
+                                    class="text-decoration-none text-dark"
+                                >
+                                    {{ application.job.title }}
+                                </a>
+
+                            </h3>
+
+                            <p class="text-muted mb-0">
+
+                                <i class="bi bi-building me-1"></i>
+
+                                {{ application.job.company.name }}
+
+                            </p>
+
+                        </div>
+
+
+                        {% if application.status == "APPLIED" %}
+
+                            <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+                                <i class="bi bi-send me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% elif application.status == "SHORTLISTED" %}
+
+                            <span class="badge bg-info-subtle text-info px-3 py-2">
+
+                                <i class="bi bi-check2-circle me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% elif application.status == "INTERVIEW" %}
+
+                            <span class="badge bg-warning-subtle text-warning px-3 py-2">
+
+                                <i class="bi bi-calendar-event me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% elif application.status == "SELECTED" or application.status == "HIRED" %}
+
+                            <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                <i class="bi bi-trophy me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% elif application.status == "REJECTED" %}
+
+                            <span class="badge bg-danger-subtle text-danger px-3 py-2">
+
+                                <i class="bi bi-x-circle me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-2">
+
+                                <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+                                {{ application.get_status_display }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Application Information -->
+
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+
+                        <span class="badge bg-light text-dark">
+
+                            <i class="bi bi-geo-alt me-1"></i>
+
+                            {{ application.job.location }}
+
+                        </span>
+
+
+                        <span class="badge bg-light text-dark">
+
+                            <i class="bi bi-briefcase me-1"></i>
+
+                            {{ application.job.get_employment_type_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Applied Date -->
+
+                    <div class="mb-4">
+
+                        <small class="text-muted d-block mb-1">
+                            Applied On
+                        </small>
+
+                        <p class="mb-0 fw-semibold">
+
+                            <i class="bi bi-calendar3 text-primary me-1"></i>
+
+                            {{ application.applied_at|date:"M d, Y, g:i A" }}
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- Cover Letter -->
+
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold mb-2">
+
+                            <i class="bi bi-file-text text-primary me-2"></i>
+
+                            Cover Letter
+
+                        </h5>
+
+
+                        {% if application.cover_letter %}
+
+                            <div class="bg-light rounded-3 p-3">
+
+                                <p class="text-muted mb-0">
+                                    {{ application.cover_letter }}
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <p class="text-muted mb-0">
+                                No cover letter provided.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Actions -->
+
+                    <div class="d-flex flex-wrap gap-2 mt-auto">
+
+                        <a
+                            href="{% url 'jobs:job_detail' application.job.id %}"
+                            class="btn btn-outline-primary"
+                        >
+
+                            <i class="bi bi-eye me-1"></i>
+
+                            View Job
+
+                        </a>
+
+
+                        {% if application.status != "WITHDRAWN" %}
+
+                            <form
+                                method="post"
+                                action="{% url 'applications:withdraw_application' application.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+
+                                    <i class="bi bi-x-circle me-1"></i>
+
+                                    Withdraw
+
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <!-- Empty State -->
+
+    <div class="card p-5 text-center">
+
+        <i class="bi bi-file-earmark-text fs-1 text-muted mb-3"></i>
+
+        <h3 class="fw-bold">
+            No Applications Yet
+        </h3>
+
+        <p class="text-muted mb-4">
+            You haven't applied for any jobs yet. Start exploring available opportunities.
+        </p>
+
+        <div>
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="btn btn-primary px-4"
+            >
+
+                <i class="bi bi-search me-1"></i>
+
+                Browse Jobs
+
+            </a>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+
+<!-- Navigation -->
+
+<div class="mt-5">
+
+    <a
+        href="{% url 'accounts:job_seeker_dashboard' %}"
+        class="text-decoration-none"
+    >
+
+        <i class="bi bi-arrow-left me-1"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</div>
+
+{% endblock %}
+
